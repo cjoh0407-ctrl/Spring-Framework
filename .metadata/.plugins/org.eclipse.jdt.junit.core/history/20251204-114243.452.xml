@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="BoardMapperTests" project="sp1" tests="2" started="2" failures="0" errors="1" ignored="0">
+  <testsuite name="org.zerock.mapper.BoardMapperTests" time="0.56" displayname="BoardMapperTests" uniqueid="[engine:junit-jupiter]/[class:org.zerock.mapper.BoardMapperTests]">
+    <testcase name="testSelectOne" classname="org.zerock.mapper.BoardMapperTests" time="0.497" displayname="testSelectOne()" uniqueid="[engine:junit-jupiter]/[class:org.zerock.mapper.BoardMapperTests]/[method:testSelectOne()]">
+      <error>org.springframework.jdbc.BadSqlGrammarException: &#13;
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column 'bno' in 'where clause'&#13;
+### The error may exist in file [D:\ChangJun\Works\SF\sp1\target\classes\mapper\BoardMapper.xml]&#13;
+### The error may involve defaultParameterMap&#13;
+### The error occurred while setting parameters&#13;
+### SQL: select * from tbl_board where bno = ?&#13;
+### Cause: java.sql.SQLSyntaxErrorException: Unknown column 'bno' in 'where clause'
+; bad SQL grammar []&#13;
+	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:246)&#13;
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)&#13;
+	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:93)&#13;
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:347)&#13;
+	at jdk.proxy2/jdk.proxy2.$Proxy51.selectOne(Unknown Source)&#13;
+	at org.mybatis.spring.SqlSessionTemplate.selectOne(SqlSessionTemplate.java:154)&#13;
+	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:87)&#13;
+	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)&#13;
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)&#13;
+	at jdk.proxy2/jdk.proxy2.$Proxy52.selectOne(Unknown Source)&#13;
+	at org.zerock.mapper.BoardMapperTests.testSelectOne(BoardMapperTests.java:45)&#13;
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'bno' in 'where clause'&#13;
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:112)&#13;
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)&#13;
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:988)&#13;
+	at com.mysql.cj.jdbc.ClientPreparedStatement.execute(ClientPreparedStatement.java:383)&#13;
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)&#13;
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)&#13;
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)&#13;
+	at jdk.proxy3/jdk.proxy3.$Proxy54.execute(Unknown Source)&#13;
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)&#13;
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:80)&#13;
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:65)&#13;
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:336)&#13;
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:158)&#13;
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:110)&#13;
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:90)&#13;
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:154)&#13;
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)&#13;
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:142)&#13;
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectOne(DefaultSqlSession.java:75)&#13;
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:333)&#13;
+	... 7 more&#13;
+&#13;
+</error>
+    </testcase>
+    <testcase name="testInsert" classname="org.zerock.mapper.BoardMapperTests" time="0.062" displayname="testInsert()" uniqueid="[engine:junit-jupiter]/[class:org.zerock.mapper.BoardMapperTests]/[method:testInsert()]"/>
+  </testsuite>
+</testrun>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="BoardMapperTests" project="sp1" tests="4" started="4" failures="0" errors="1" ignored="0">
+  <testsuite name="org.zerock.mapper.BoardMapperTests" time="0.197" displayname="BoardMapperTests" uniqueid="[engine:junit-jupiter]/[class:org.zerock.mapper.BoardMapperTests]">
+    <testcase name="testSelectOne" classname="org.zerock.mapper.BoardMapperTests" time="0.159" displayname="testSelectOne()" uniqueid="[engine:junit-jupiter]/[class:org.zerock.mapper.BoardMapperTests]/[method:testSelectOne()]"/>
+    <testcase name="testDelete" classname="org.zerock.mapper.BoardMapperTests" time="0.006" displayname="testDelete()" uniqueid="[engine:junit-jupiter]/[class:org.zerock.mapper.BoardMapperTests]/[method:testDelete()]"/>
+    <testcase name="testInsert" classname="org.zerock.mapper.BoardMapperTests" time="0.016" displayname="testInsert()" uniqueid="[engine:junit-jupiter]/[class:org.zerock.mapper.BoardMapperTests]/[method:testInsert()]"/>
+    <testcase name="testUpdate" classname="org.zerock.mapper.BoardMapperTests" time="0.013" displayname="testUpdate()" uniqueid="[engine:junit-jupiter]/[class:org.zerock.mapper.BoardMapperTests]/[method:testUpdate()]">
+      <error>org.mybatis.spring.MyBatisSystemException: &#13;
+### Error updating database.  Cause: org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'delflag' in 'class org.zerock.dto.BoardDTO'&#13;
+### The error may exist in file [D:\ChangJun\Works\SF\sp1\target\classes\mapper\BoardMapper.xml]&#13;
+### The error may involve defaultParameterMap&#13;
+### The error occurred while setting parameters&#13;
+### SQL: update tbl_board set     title = ?, content = ?,    updatedate = now(), delflag = ?   where bno = ?&#13;
+### Cause: org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'delflag' in 'class org.zerock.dto.BoardDTO'&#13;
+	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:99)&#13;
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:347)&#13;
+	at jdk.proxy2/jdk.proxy2.$Proxy51.update(Unknown Source)&#13;
+	at org.mybatis.spring.SqlSessionTemplate.update(SqlSessionTemplate.java:234)&#13;
+	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:67)&#13;
+	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)&#13;
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)&#13;
+	at jdk.proxy2/jdk.proxy2.$Proxy52.update(Unknown Source)&#13;
+	at org.zerock.mapper.BoardMapperTests.testUpdate(BoardMapperTests.java:66)&#13;
+Caused by: org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'delflag' in 'class org.zerock.dto.BoardDTO'&#13;
+	at org.apache.ibatis.reflection.Reflector.getGetInvoker(Reflector.java:385)&#13;
+	at org.apache.ibatis.reflection.MetaClass.getGetInvoker(MetaClass.java:160)&#13;
+	at org.apache.ibatis.reflection.wrapper.BeanWrapper.getBeanProperty(BeanWrapper.java:156)&#13;
+	at org.apache.ibatis.reflection.wrapper.BeanWrapper.get(BeanWrapper.java:50)&#13;
+	at org.apache.ibatis.reflection.MetaObject.getValue(MetaObject.java:115)&#13;
+	at org.apache.ibatis.scripting.defaults.DefaultParameterHandler.setParameters(DefaultParameterHandler.java:82)&#13;
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.parameterize(PreparedStatementHandler.java:97)&#13;
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.parameterize(RoutingStatementHandler.java:65)&#13;
+	at org.apache.ibatis.executor.SimpleExecutor.prepareStatement(SimpleExecutor.java:91)&#13;
+	at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:49)&#13;
+	at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:117)&#13;
+	at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:76)&#13;
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:197)&#13;
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:333)&#13;
+	... 7 more&#13;
+&#13;
+</error>
+    </testcase>
+  </testsuite>
+</testrun>

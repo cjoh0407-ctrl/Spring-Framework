@@ -1,0 +1,45 @@
+package org.zerock.dto;
+
+import java.time.LocalDateTime;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/*
+ * CREATE TABLE table_board(
+	bon INT auto_increment PRIMARY KEY,
+    title VARCHAR(500) NOT NULL,
+    content VARCHAR(2000) NOT NULL,
+    writer VARCHAR(50) NOT NULL,
+    regdate TIMESTAMP DEFAULT now(),
+    updatedate TIMESTAMP DEFAULT now(),
+    delflag BOOLEAN DEFAULT false
+);
+ */
+@Setter
+@Getter
+@ToString
+public class BoardDTO {
+
+	private Long bno;
+	private String title;
+	private String writer;
+	private String content;
+	private LocalDateTime regDate;
+	private LocalDateTime updateDate;
+	private boolean delFlag;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,123 @@
+package org.zerock.controller;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.zerock.dto.BoardDTO;
+import org.zerock.service.BoardService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
+@Controller
+@Log4j2
+@RequestMapping("/board")
+@RequiredArgsConstructor
+public class BoardController {
+	
+	// 생성자 주입(DI) @RequiredArgsConstructor에 의해서!
+	private final BoardService boardService;
+
+	// 요청 - localhost:8080/board/list
+	// 응답 - /WEB-INF/views/board/list.jsp
+	@GetMapping("/list")
+	public void list() {
+		log.info("board list");
+		
+		List<BoardDTO> list = boardService.getList();
+		log.info(list);
+		
+		BoardDTO dto = BoardDTO.builder()
+				
+				
+				.build();
+	}
+	
+	
+	//등록화면
+	// 요청 - localhost:8080/board/register
+	// 응답 - /WEB-INF/views/board/register.jsp
+	@GetMapping("/register")
+	public void register() {
+		log.info("board register");
+	}
+	
+	//등록처리
+	//post요청 - localhost:8080/board/register
+	// 응답 - localhost:8080/board/list
+	@PostMapping("/register")
+	public String registerPost() {
+		log.info("-----------------------------------");
+		log.info("board register post");
+		return "redirect:/board/list";
+		
+	}
+	
+	//단건조회
+	// 요청 - localhost:8080/board/read/1 -> DB에서 1번 데이터 보여주세요.
+	// 응답 - /WEB-INF/views/board/read.jsp
+	@GetMapping("/read/{bno}")
+	public String read(@PathVariable("bno") Long bno) {
+		
+		log.info("board read");
+		return "/board/read";
+	}
+	
+	/*
+	 * 수정 폼
+	 * 요청 - localhost:8080/board/modify/1 - 1번 글 수정 폼 보여줘.
+	 * 응답 - /WEB-INF/views/board/modify.jsp
+	 */
+	@GetMapping("/modify/{bno}")
+	public String modifyGet(@PathVariable("bno") Long bno) {
+		log.info("board modify get");
+		return "board/modify";
+	}
+	
+	// 요청 - localhost:8080/board/modify
+	// 응답 - localhost:8080/board/read/1
+	@PostMapping("/modify/")
+	public String modifyPost() {
+		log.info("board modify post");
+		
+		return "redirect : /board/read/1";
+	}
+	
+	/*
+	 * 삭제
+	 * 요청 - localhost:8080/board/remove
+	 * 응답 - localhost:8080/board/list
+	 */
+	@PostMapping("/remove")
+	public String remove() {
+		log.info("board remove post");
+		
+		return "redirect : /board/list";
+	}
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
