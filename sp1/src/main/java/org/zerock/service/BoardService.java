@@ -37,5 +37,19 @@ public class BoardService {
 		
 		return boardMapper.selectOne(bno);
 	}
+
+
+
+	public void remove(Long bno) {
+		
+		boardMapper.remove(bno);
+	}
+
+
+
+	public void modify(BoardDTO dto) {
+		
+		boardMapper.update(dto);
+	}
 }
 

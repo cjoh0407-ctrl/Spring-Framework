@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.dto.BoardDTO;
 import org.zerock.service.BoardService;
@@ -86,18 +87,23 @@ public class BoardController {
 	 * 응답 - /WEB-INF/views/board/modify.jsp
 	 */
 	@GetMapping("/modify/{bno}")
-	public String modifyGet(@PathVariable("bno") Long bno) {
+	public String modifyGet(@PathVariable("bno") Long bno, Model model) {
 		log.info("board modify get");
+		
+		BoardDTO dto = boardService.read(bno);
+		model.addAttribute("board", dto);
 		return "board/modify";
 	}
 	
 	// 요청 - localhost:8080/board/modify
 	// 응답 - localhost:8080/board/read/1
-	@PostMapping("/modify/")
-	public String modifyPost() {
+	@PostMapping("/modify")
+	public String modifyPost(BoardDTO dto) {
 		log.info("board modify post");
 		
-		return "redirect : /board/read/1";
+		boardService.modify(dto);
+		
+		return "redirect:/board/read/"+dto.getBno();
 	}
 	
 	/*
@@ -106,10 +112,14 @@ public class BoardController {
 	 * 응답 - localhost:8080/board/list
 	 */
 	@PostMapping("/remove")
-	public String remove() {
+	public String remove(@RequestParam("bno") Long bno,
+			RedirectAttributes rttr) {
 		log.info("board remove post");
 		
-		return "redirect : /board/list";
+		boardService.remove(bno);
+		rttr.addFlashAttribute("result", bno); //팝업창을 띄우기 위한 용도
+		
+		return "redirect:/board/list";
 	}
 	
 	
