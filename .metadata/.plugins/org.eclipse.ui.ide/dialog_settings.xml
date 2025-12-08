@@ -22,6 +22,7 @@
 		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
 		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="D:\ChangJun\Works\SF\sp3"/>
 			<item value="D:\ChangJun\Works\SF\sp2"/>
 			<item value="D:\ChangJun\Works\SF\member"/>
 		</list>

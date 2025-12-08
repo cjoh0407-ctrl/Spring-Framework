@@ -32,12 +32,16 @@ public class MemberController {
 		model.addAttribute("memberList", memberList);
 	}
 	
+	
+	
 	// 요청 - localhost:8080/member/register
 	// 응답 - WEB-INF/views/member/register.jsp
 	@GetMapping("/register")
 	public void registerGet() {
 		log.info("register get");
 	}
+	
+	
 	
 	// 요청 - localhost:8080/member/register
 	// 응답 - localhost:8080/member/list
@@ -49,6 +53,8 @@ public class MemberController {
 		return "redirect:/member/list";
 	}
 	
+	
+	
 	@GetMapping("/read/{mno}")
 	public String read(@PathVariable("mno") int mno, Model model) {
 		
@@ -58,7 +64,25 @@ public class MemberController {
 		return "member/read";
 	}
 	
-	//@PostMapping("/read")
+	
+	
+	@PostMapping("/modify")
+	public String modifyPost(MemberDTO dto) {
+		
+		service.update(dto);
+		
+		return "redirect:/member/list";
+	}
+	
+	
+	
+	@PostMapping("/delete")
+	public String deletePost(@RequestParam("mno") int mno) {
+		
+		service.delete(mno);
+		
+		return "redirect:/member/list";
+	}
 }
 
 

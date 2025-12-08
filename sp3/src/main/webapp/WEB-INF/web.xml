@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
+  <display-name>sp2</display-name>
+  
+  <listener> <!-- 리스너 읽으면 컨택스트 로딩 root-context.xml / 서비스, DAO, 데이터베이스 연결, 보안 등 웹 계층과 독립적인 백엔드 핵심 기능을 담습니다.-->
+     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <context-param>
+     <param-name>contextConfigLocation</param-name>	<!-- ContextLoaderListener에게 설계도가 담긴 파일 경로인 root-context.xml을 알려줌 -->
+     <param-value>/WEB-INF/spring/root-context.xml</param-value>
+  </context-param>
+  
+  
+  
+  <servlet> <!-- 실제 손님을 맞이하고 처리하는 준비 -->
+  	<servlet-name>appServlet</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>	
+  	<!-- 프론트 컨트톨러 / 들어오는 모든 웹 요청을 가장 먼저 받아 처리하고 적절한 담당자에게 전달합니다.-->
+  	
+  	<init-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>/WEB-INF/spring/servlet-context.xml</param-value>
+  	</init-param>
+  	<!-- DispatcherServlet에게 전용 매뉴얼 (/WEB-INF/spring/servlet-context.xml)의 위치를 알려줍니다. -->
+  	<load-on-startup>1</load-on-startup>
+  	<!-- 웹 서버 시작 시 가장 먼저(1) DispatcherServlet을 메모리에 올려 바로 영업 준비를 시킵니다. -->
+  </servlet>
+  
+  
+  
+  <!-- 	DispatcherServlet을 **웹사이트의 모든 주소 (/)**에 연결하여, 모든 요청을 이 서블릿이 총괄하도록 지정합니다. -->
+  <servlet-mapping>
+  	<servlet-name>appServlet</servlet-name>
+  	<url-pattern>/</url-pattern>
+  </servlet-mapping>
+</web-app>

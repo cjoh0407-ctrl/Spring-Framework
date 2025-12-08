@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,15 +24,14 @@
     </div>
     <div class="mb-3 mt-3">
       <label>Email:</label>
-      <input type="email" class="form-control" name="email"
-      	value="<c:out value='${member.email}'/>">
+      <input type="email" class="form-control"  
+      name="email" value="<c:out value='${member.email}'/>">
     </div>
     <div class="mb-3">
       <label>Password:</label>
-      <input type="password" class="form-control" name="password"
-      	value="<c:out value='${member.password}'/>">
-    </div>
-    
+      <input type="password" class="form-control" 
+      	name="password" value="<c:out value='${member.password}'/>">
+    </div>   
     <button type="button" class="btn btn-primary update">수정</button>
     <button type="button" class="btn btn-danger delete">삭제</button>
     <button type="button" class="btn btn-info list">목록</button>
@@ -40,24 +40,24 @@
 
 <script type="text/javascript">
 	const formObj = document.getElementById("form");
-	document.querySelector(".update").addEventListener("click", ()=> {
+	document.querySelector(".update").addEventListener("click", ()=>{
 		formObj.action = "/member/modify";
-		formObj.method = "post";
+		formObj.method = "post"
 		formObj.submit();
-	})	
-	
-	document.querySelector(".delete").addEventListener("click", ()=> {
+	});
+
+	document.querySelector(".delete").addEventListener("click", ()=>{
 		formObj.action = "/member/delete";
-		formObj.method = "post";
+		formObj.method = "post"
 		formObj.submit();
-	})	
-	
-	document.querySelector(".list").addEventListener("click", ()=> {
+	});
+
+	document.querySelector(".list").addEventListener("click", ()=>{
 		formObj.reset();
 		formObj.action = "/member/list";
-		formObj.method = "get";
+		formObj.method = "get"
 		formObj.submit();
-	})	
+	});
 </script>
 
 </body>

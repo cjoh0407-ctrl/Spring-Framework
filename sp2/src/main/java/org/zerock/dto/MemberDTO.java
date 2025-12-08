@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
   updatedate TIMESTAMP DEFAULT NOW()
 );
  */
+
 @Data
 @Builder
 @AllArgsConstructor
