@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.zerock.dto.BoardDTO;
+import org.zerock.dto.BoardListPagingDTO;
 import org.zerock.mapper.BoardMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,29 @@ public class BoardService {
 		
 		return boardMapper.list();
 	}
-
+	
+	public BoardListPagingDTO getList(int page, int size) {
+		
+		page = (page <= 0) ? 1 : page;
+		
+		// 10개의 항목 미만이거나, 페이지가 100페이지가 넘어가면 10개씩 보여주기 / 100페이지 전에는 20개 50개씩 보여줘도 상관없다.
+		size = (size <= 10 || page > 100) ? 10 : size;
+		
+		/*
+		 *	전체 데이터 100개 있다고 가정.
+		 *	1 page : size(10) -> 100 ~ 91, skip = 0
+		 *	2 page : size(10) -> 90 ~ 81, skip = 10
+		 *	3 page : size(10) -> 80 ~ 71, skip = 20
+		 */
+		
+		int skip = (page - 1) * size;
+		
+		List<BoardDTO> list = boardMapper.list2(skip, size);
+		
+		int total = boardMapper.listCount();
+		
+		return new BoardListPagingDTO(list, total, page, size);
+	}
 	
 	
 	public Long register(BoardDTO dto) {
@@ -51,5 +74,6 @@ public class BoardService {
 		
 		boardMapper.update(dto);
 	}
+	
 }
 

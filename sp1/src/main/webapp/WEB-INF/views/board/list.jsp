@@ -20,7 +20,7 @@
 						<th>RegDate</th>
 					</thead>
 					<tbody class="tbody">
-						<c:forEach var="board" items="${list}">
+						<c:forEach var="board" items="${dto.boardDTOList}">
 							<tr data-bon=${board.bno}>
 								<td><c:out value="${board.bno}" /></td>
 								<td>
@@ -34,6 +34,33 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				
+				<!-- 페이징 처리 시작 -->
+				<div class="d-flex justify-content-center">
+				  <ul class="pagination">
+				  
+				  	<c:if test="${dto.prev}">
+					    <li class="page-item">
+					      <a class="page-link" href="${dto.start - 1}" tabindex="-1">Previous</a>
+					    </li>
+				    </c:if>
+				    
+				    <c:forEach var="num" items="${dto.pageNums}">
+				    	<li class="page-item ${dto.page == num ? 'active' : ''}">
+				    		<a class="page-link" href="${num}">${num}</a>
+				    	</li>
+				    </c:forEach>
+				    
+				    <c:if test="${dto.next}">
+					    <li class="page-item">
+					      <a class="page-link" href="${dto.end + 1}">Next</a>
+					    </li>
+				    </c:if>
+				    
+				  </ul>
+				</div>
+				<!-- 페이징 처리 끝 -->
+				
 			</div>
 		</div>
 	</div>
@@ -77,6 +104,32 @@
 		myModal.show();
 	}
 	
+	// 페이징 이벤트 처리
+	const pagingDiv = document.querySelector(".pagination");
+	pagingDiv.addEventListener("click", (e)=> {
+		
+		//a 태그 기본 동작(페이지 이동) 막기
+		e.preventDefault();
+		
+		// 이벤트 버블링 방지(부모 요소로 이벤트 전파 차단)
+		e.stopPropagation();
+		
+		const target = e.target;
+		console.log(target);
+		
+		const targetPage = target.getAttribute("href");
+		const size = ${dto.size} || 10;
+		
+		const params = new URLSearchParams({
+			page : targetPage,
+			size : size
+		});
+		
+		//?page=5&size=10
+		
+		self.location = `/board/list?\${params.toString()}` ;
+		
+	}, false);
 	
 </script>
 

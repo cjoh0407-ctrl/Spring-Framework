@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.dto.BoardDTO;
+import org.zerock.dto.BoardListPagingDTO;
 import org.zerock.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,18 +26,27 @@ public class BoardController {
 	// 생성자 주입(DI) @RequiredArgsConstructor에 의해서!
 	private final BoardService boardService;
 
+	
+	
+	
 	// 요청 - localhost:8080/board/list
 	// 응답 - /WEB-INF/views/board/list.jsp
 	@GetMapping("/list")
-	public void list(Model model) {
+	public void list(
+			@RequestParam(name="page", defaultValue = "1") int page,
+			@RequestParam(name="size", defaultValue = "10") int size,
+			Model model) {
 		log.info("board list");
 		
-		List<BoardDTO> boardDtoList = boardService.getList();
-		model.addAttribute("list", boardDtoList); // Model에 값을 담아서 넘김!
+		BoardListPagingDTO list = boardService.getList(page, size);
 		
-		// model.addAttribute("list", boardService.getList()); // 한 줄로 이렇게도 가능!
+		log.info(list);
+		
+		model.addAttribute("dto", list); // Model에 값을 담아서 넘김!
 		
 	}
+	
+	
 	
 	
 	//등록화면
