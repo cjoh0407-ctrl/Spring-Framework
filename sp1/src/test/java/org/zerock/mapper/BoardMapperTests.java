@@ -117,6 +117,33 @@ public class BoardMapperTests {
 	}
 	
 	
+	@Test
+	public void testSearch() {
+		
+		int page = 2;
+		int skip = (page-1) * 10;
+		int count = 15;
+		
+		
+		
+		
+		String[] types = new String[] {"T", "C", "W"};
+		String keyword = "test";
+		
+		boardMapper.listSearch(skip, count, types, keyword);
+	}
+	
+	@Test
+	public void testCount() {
+		
+		String[] types = new String[] {"T", "C"};
+		String keyword = "새글";
+		
+		int result = boardMapper.listCountSearch(types, keyword);
+		log.info("전체 갯수 : " + result);
+	}
+	
+	
 }
 
 
