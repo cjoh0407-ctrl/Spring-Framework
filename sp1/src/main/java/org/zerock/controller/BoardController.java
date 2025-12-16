@@ -35,10 +35,12 @@ public class BoardController {
 	public void list(
 			@RequestParam(name="page", defaultValue = "1") int page,
 			@RequestParam(name="size", defaultValue = "10") int size,
+			@RequestParam(name="types", required = false) String types,
+			@RequestParam(name="keyword", required = false) String keyword,
 			Model model) {
 		log.info("board list");
 		
-		BoardListPagingDTO list = boardService.getList(page, size);
+		BoardListPagingDTO list = boardService.getList(page, size, types, keyword);
 		
 		log.info(list);
 		
@@ -83,10 +85,19 @@ public class BoardController {
 	// 요청 - localhost:8080/board/read/1 -> DB에서 1번 데이터 보여주세요.
 	// 응답 - /WEB-INF/views/board/read.jsp
 	@GetMapping("/read/{bno}")
-	public String read(@PathVariable("bno") Long bno, Model model) {
+	public String read(@PathVariable("bno") Long bno,
+			@RequestParam(name="page", defaultValue = "1") int page,
+			@RequestParam(name="size", defaultValue = "10") int size,
+			@RequestParam(name="types", required = false) String types,
+			@RequestParam(name="keyword", required = false) String keyword,
+			Model model) {
 		
 		BoardDTO dto = boardService.read(bno);
 		model.addAttribute("board", dto);
+		model.addAttribute("page", page);
+	    model.addAttribute("size", size);
+	    model.addAttribute("types", types);
+	    model.addAttribute("keyword", keyword);
 		
 		return "/board/read";
 	}

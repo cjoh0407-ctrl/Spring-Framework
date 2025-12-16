@@ -68,7 +68,7 @@
  	</select>
  	
  	<sql id = "search">
- 		<if test="types != null and keyword != null">
+ 		<if test="types != null and types.length > 0 and keyword != null and keyword != ''">
  			<foreach collection="types" item="type" open="and (" close=")" separator=" or ">
  			
  				<if test='type.equals("T")'>
@@ -93,7 +93,7 @@
  		from tbl_board
  		where delflag = false 
  		
- 		<include refid="search" />
+ 		<include refid="search"/>
  		
  		order by bno desc
  		limit #{skip}, #{count}
@@ -104,7 +104,7 @@
  		from tbl_board
  		where delflag = false 
  		
- 		<include refid="search" />
+ 		<include refid="search"/>
  		
  	</select>
 </mapper>
