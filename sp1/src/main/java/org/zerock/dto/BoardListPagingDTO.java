@@ -56,7 +56,8 @@ public class BoardListPagingDTO {
 		this.next = (totalCount > (this.end * size)); // 275면 10, 20일때는 true, 28일때는 false
 		
 		this.pageNums = IntStream.rangeClosed(start, end).boxed().toList();
-		
+		// range는 start부터 end 앞번호까지 추출
+		// rangeClosed는 start부터 end 끝까지 추출
 		
 		
 		/*	

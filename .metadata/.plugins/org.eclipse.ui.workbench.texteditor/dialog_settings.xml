@@ -10,6 +10,7 @@
 		<item key="isRegEx" value="false"/>
 		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
+			<item value="jack"/>
 			<item value="W"/>
 			<item value="setConfigLocation"/>
 			<item value="driverClassName"/>
