@@ -24,6 +24,14 @@ public class SecurityConfig {
 			
 		});
 		
+		http.csrf(config -> {
+			config.disable();
+		});	//csrf의 보호 기능을 끈다. 설계 단계이기 때문에
+		
+		http.exceptionHandling(config->{
+			config.accessDeniedHandler(new Custom403handler());
+		}); // 접근 권한 없이 다른 페이지에 접속하면 403 에러 화면 말고 내가 만든 화면을 보여주겠다.
+		
 		return http.build();
 	}
 	

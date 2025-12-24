@@ -1,6 +1,7 @@
 package org.zerock.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,12 +42,14 @@ public class HelloController {
 	//	this.helloService = helloService;
 	//}
 	
+	@PreAuthorize("hasRole('USER')")
 	//localhost:8080/WEB-INF/views/sample/ex1.jsp
 	@GetMapping("/ex1")	//sample/ex1
 	public void ex1() {
 		log.info("/sample/ex1");
 	}
 	
+	@PreAuthorize("hasRole('MANAGER')")
 	//localhost:8080/WEB-INF/views/sample/success/ex2.jsp
 	@GetMapping("/ex2")
 	public String ex2() {
@@ -55,7 +58,8 @@ public class HelloController {
 	}
 	
 	//localhost:8080/sample/ex3 -> redirect이기에 -> localhost:8080/sample/ex3re -> 다시 get 요청! / 
-									// 중복을 방지할 때에. 데이터 등록, 수정, 삭제 등의 작업이 이루어지고 나서!
+								// 중복을 방지할 때에. 데이터 등록, 수정, 삭제 등의 작업이 이루어지고 나서!
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/ex3")
 	public String ex3() {
 		return "redirect:/sample/ex3re";
@@ -141,6 +145,10 @@ public class HelloController {
 		log.info("/sample/ex8");
 	}
 	
+	@GetMapping("/access-denied")
+	public String accessDenied(){
+		return "/sample/accessDenied";
+	}
 	
 	
 }

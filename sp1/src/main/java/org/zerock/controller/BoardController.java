@@ -2,6 +2,7 @@ package org.zerock.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,6 +85,7 @@ public class BoardController {
 	//단건조회
 	// 요청 - localhost:8080/board/read/1 -> DB에서 1번 데이터 보여주세요.
 	// 응답 - /WEB-INF/views/board/read.jsp
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/read/{bno}")
 	public String read(@PathVariable("bno") Long bno,
 			@RequestParam(name="page", defaultValue = "1") int page,
@@ -118,7 +120,11 @@ public class BoardController {
 	
 	// 요청 - localhost:8080/board/modify
 	// 응답 - localhost:8080/board/read/1
+	
 	@PostMapping("/modify")
+	@PreAuthorize("authentication.name == #dto.writer")
+	//해당 메서드를 실행하기 직전에(Pre)
+	//현재 로그인한 사용자의 이름과 파라미터로 넘어온 DTO의 작성자 이름이 일치하는지 확인해라
 	public String modifyPost(BoardDTO dto) {
 		log.info("board modify post");
 		
