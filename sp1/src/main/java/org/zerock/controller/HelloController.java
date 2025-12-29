@@ -136,4 +136,16 @@ public class HelloController {
 		return "/sample/accessDenied";
 	}
 	
+	@GetMapping("ex111")
+	public void ex1111() {
+		log.info("/sample/ex1111");
+		helloService.hello1();
+	}
+	
+	@GetMapping("ex222")
+	public String ex222() {
+		log.info("/sample/ex222");
+		helloService.hello2("Hong Gil Dong");
+		return "sample/success";
+	}
 }
