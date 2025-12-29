@@ -1,5 +1,6 @@
 package org.zerock.mapper;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j2
-class ReplyMapperTest {
+class ReplyMapperTests {
 
 	@Autowired
 	private ReplyMapper replyMapper;
@@ -23,53 +24,50 @@ class ReplyMapperTest {
 	public void testInsert() {
 		
 		ReplyDTO replyDTO = ReplyDTO.builder()
-				.bno(54252L)
-				.replyText("댓글 내용")
-				.replyer("홍길동")
-				.build(); 
+				.bno(11665218L)
+				.replyText("댓글 내용3")
+				.replyer("박길동")
+				.build();
 		
 		int result = replyMapper.insert(replyDTO);
 		log.info("result : " + result);
 		log.info("rno : " + replyDTO.getRno());
+		
 	}
 	
 	@Test
 	public void testRead() {
 		ReplyDTO dto = replyMapper.read(4);
-		log.info("dto : " + dto);
+		log.info("dto : " +dto);
 	}
-	
+
 	@Test
 	public void testDelete() {
 		
-		log.info("result : " + replyMapper.delete(3));
+		log.info("result : " + replyMapper.delete(4));
 	}
 	
 	@Test
 	public void testUpdate() {
+		ReplyDTO replyDTO = new ReplyDTO();
 		
-		ReplyDTO dto = ReplyDTO.builder()
-					.replyText("수정 댓글")
-					.rno(1)
-					.build();
+		replyDTO.setReplyText("댓글 내용 수정");
+		replyDTO.setRno(1);
 		
-		replyMapper.update(dto);
-		
-		log.info(replyMapper.read(1));
+		replyMapper.update(replyDTO);
 	}
-
+	
 	@Test
 	public void testInserts() {
-		long[] bnos = {54252L, 54251L, 54250L};
+		long[] bnos = {11665218L, 11665217L, 49999L };
 		
 		for(Long bno : bnos) {
 			for(int i=0; i<100; i++) {
 				ReplyDTO dto = ReplyDTO.builder()
 						.bno(bno)
-						.replyText("replyer" + i)
-						.replyer("replyer" + i)
+						.replyText("replyer"+ i)
+						.replyer("replyer"+i)
 						.build();
-				
 				replyMapper.insert(dto);
 			}
 		}
@@ -77,21 +75,8 @@ class ReplyMapperTest {
 	
 	@Test
 	public void testList() {
-		replyMapper.listOfBoard(54252L, 10, 10).forEach(reply -> log.info("reply : " + reply));
+		replyMapper.listOfBoard(49999L, 10, 10)
+		.forEach(reply -> log.info("reply : " + reply));
 	}
-	
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-
-

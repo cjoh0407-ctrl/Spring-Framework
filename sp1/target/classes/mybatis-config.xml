@@ -7,5 +7,4 @@
 	<typeAliases>
 		<package name="org.zerock.dto"/>
 	</typeAliases>
-
 </configuration>

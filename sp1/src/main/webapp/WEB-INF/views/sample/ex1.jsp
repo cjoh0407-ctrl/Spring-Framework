@@ -3,8 +3,6 @@
 
 <%@ include file="/WEB-INF/views/includes/header.jsp" %>
 
-    
-    
       <h3>User Management</h3>
       <div class="table-responsive my-3">
         <table class="table table-bordered table-hover align-middle">
@@ -46,4 +44,5 @@
         </ul>
       </nav>
 
-<%@ include file="/WEB-INF/views/includes/footer.jsp" %>
+ 
+<%@ include file="/WEB-INF/views/includes/footer.jsp" %>      

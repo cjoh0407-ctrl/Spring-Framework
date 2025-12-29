@@ -3,16 +3,18 @@ package org.zerock.controller;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.dto.BoardDTO;
-import org.zerock.dto.BoardListPagingDTO;
+import org.zerock.dto.BoardListPaginDTO;
 import org.zerock.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,68 +25,70 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
-	
-	// 생성자 주입(DI) @RequiredArgsConstructor에 의해서!
-	private final BoardService boardService;
 
+	//생성자 주입(DI) , @RequiredArgsConstructor 의해서
+	private final BoardService boardService;
 	
+	/*
+	//localhost:8080/board/ex1 -> /WEB-INF/ views / board / ex1.jsp
+	@GetMapping("/ex1")
+	void ex1() {
+		
+	}
+	*/
 	
-	
-	// 요청 - localhost:8080/board/list
-	// 응답 - /WEB-INF/views/board/list.jsp
+	// localhost:8080/board/list
+	// -> /WEB-INF/ views / board / list.jsp
 	@GetMapping("/list")
 	public void list(
 			@RequestParam(name="page", defaultValue = "1") int page,
 			@RequestParam(name="size", defaultValue = "10") int size,
 			@RequestParam(name="types", required = false) String types,
-			@RequestParam(name="keyword", required = false) String keyword,
-			Model model) {
-		log.info("board list");
+			@RequestParam(name="keyword", required = false) String keyword,			
+			Model model, Authentication authentication) {
 		
-		BoardListPagingDTO list = boardService.getList(page, size, types, keyword);
+		BoardListPaginDTO list = boardService.getList(page, size,types,keyword);
 		
-		log.info(list);
+		log.info("---------------------------------------");		
 		
-		model.addAttribute("dto", list); // Model에 값을 담아서 넘김!
+		model.addAttribute("dto", list);
 		
+//		model.addAttribute("list", boardService.getList());
+
 	}
 	
-	
-	
-	
-	//등록화면
-	// 요청 - localhost:8080/board/register
-	// 응답 - /WEB-INF/views/board/register.jsp
+	//등록 화면
 	@GetMapping("/register")
 	public void register() {
 		log.info("board register");
 	}
 	
-	//등록처리
-	//post요청 - localhost:8080/board/register
-	// 응답 - localhost:8080/board/list
+	//등록 처리
 	@PostMapping("/register")
-	public String registerPost(BoardDTO dto, RedirectAttributes rttr) {
-		log.info("-----------------------------------");
+	public String registerPost(Authentication authentication,  BoardDTO dto, RedirectAttributes rttr) {
+		log.info("-------------------------------");
 		log.info("board register post");
+		log.info(authentication);
+		log.info(authentication.getPrincipal());
+		
 		
 		//게시글 등록하면 등록된 번호를 반환
-		Long bno = boardService.register(dto);
+		Long  bno = boardService.register(dto);
 		
-		rttr.addFlashAttribute("result", bno);
-		/* 1회용(1번 요청에만 유지되는) 데이터를 전달하는 방식
-		 redirect 이후에 단 한 번만 사용할 값을 저장할 때 사용
-		 URL 파라미터로 노출되지 않아서 보안상 안전함
-		 예) 글 작성 후 "글번호", "성공 메시지" 등을 다음 화면에 잠깐 보여줄 때 활용
+		/* 
+		 * 	1회용(1번 요청에만 유지되는) 데이터를 전달하는 방식
+		 	redirect 이후에 단 한 번만 사용할 값을 저장할 때 사용
+		 	URL 파라미터로 노출되지 않아서 보안상 안전함
+		 	예) 글 작성 후 "글번호", "성공 메시지" 등을 다음 화면에 잠깐 보여줄 때 활용
 		*/
+		rttr.addFlashAttribute("result", bno);
 		
 		return "redirect:/board/list";
-		
 	}
 	
-	//단건조회
-	// 요청 - localhost:8080/board/read/1 -> DB에서 1번 데이터 보여주세요.
-	// 응답 - /WEB-INF/views/board/read.jsp
+	//단건 조회	localhost:8080/board/read/12 
+	// db에서 1번 데이타 보여주세요
+	// -> /WEB-INF/ views / board / read.jsp
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/read/{bno}")
 	public String read(@PathVariable("bno") Long bno,
@@ -95,6 +99,7 @@ public class BoardController {
 			Model model) {
 		
 		BoardDTO dto = boardService.read(bno);
+		
 		model.addAttribute("board", dto);
 		model.addAttribute("page", page);
 	    model.addAttribute("size", size);
@@ -102,12 +107,12 @@ public class BoardController {
 	    model.addAttribute("keyword", keyword);
 		
 		return "/board/read";
+		
 	}
 	
 	/*
 	 * 수정 폼
-	 * 요청 - localhost:8080/board/modify/1 - 1번 글 수정 폼 보여줘.
-	 * 응답 - /WEB-INF/views/board/modify.jsp
+	 * localhost:8080/board/modify/1 
 	 */
 	@GetMapping("/modify/{bno}")
 	public String modifyGet(@PathVariable("bno") Long bno, Model model) {
@@ -115,18 +120,17 @@ public class BoardController {
 		
 		BoardDTO dto = boardService.read(bno);
 		model.addAttribute("board", dto);
+		
 		return "board/modify";
 	}
 	
-	// 요청 - localhost:8080/board/modify
-	// 응답 - localhost:8080/board/read/1
-	
+	@PreAuthorize("principal.uid == #dto.writer")
 	@PostMapping("/modify")
-	@PreAuthorize("authentication.name == #dto.writer")
-	//해당 메서드를 실행하기 직전에(Pre)
-	//현재 로그인한 사용자의 이름과 파라미터로 넘어온 DTO의 작성자 이름이 일치하는지 확인해라
-	public String modifyPost(BoardDTO dto) {
-		log.info("board modify post");
+	public String modifyPost(@ModelAttribute BoardDTO dto) {
+		log.info("board modify post");	
+		
+		
+		
 		
 		boardService.modify(dto);
 		
@@ -135,39 +139,18 @@ public class BoardController {
 	
 	/*
 	 * 삭제
-	 * 요청 - localhost:8080/board/remove
-	 * 응답 - localhost:8080/board/list
-	 */
+	 * localhost:8080/board/remove 
+	 */	
 	@PostMapping("/remove")
 	public String remove(@RequestParam("bno") Long bno,
 			RedirectAttributes rttr) {
-		log.info("board remove post");
+	
+		log.info("board remove post : " + bno);
 		
 		boardService.remove(bno);
-		rttr.addFlashAttribute("result", bno); //팝업창을 띄우기 위한 용도
+		
+		rttr.addFlashAttribute("result", bno);
 		
 		return "redirect:/board/list";
 	}
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

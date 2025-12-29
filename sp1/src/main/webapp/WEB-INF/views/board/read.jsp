@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
 <%@ include file="/WEB-INF/views/includes/header.jsp" %>
 
 <div class="row justify-content-center">
@@ -45,7 +50,13 @@
            <a href='${readUrl}'>
              <button type="button" class="btn btn-info btnList" >LIST</button>
            </a>  
-          <c:if test="${!board.delFlag}">
+           
+          
+          <sec:authentication property="principal" var="secInfo" />
+          <sec:authentication property="authorities" var="roles"/>
+           
+          <c:if test="${!board.delFlag && (secInfo.uid == board.writer ||  fn:contains(roles, 'ROLE_ADMIN'))}">
+            
             <a href='/board/modify/${board.bno}'>
             	<button type="button" class="btn btn-warning btnModify" >MODIFY</button>
             </a>	
@@ -59,26 +70,26 @@
 
 
 <div class="col-lg-12">
-   <div class="card shadow mb-4">
-   	<div class='m-4'>
-       <!--댓글 작성 폼 -->
-			<form id="replyForm" class="mt-4">
-			  <!-- 게시글 번호 hidden 처리 -->
-			  <input type="hidden" name="bno" value="${board.bno}" />
-			
-			  <div class="mb-3 input-group input-group-lg">
-			    <span class="input-group-text">Replyer</span>
-			    <input type="text" name="replyer" class="form-control" required />
-			  </div>
-			
-			  <div class="mb-3 input-group">
-			    <span class="input-group-text">Reply Text</span>
-			    <textarea name="replyText" class="form-control" rows="3" required></textarea>
-			  </div>
-			
-			  <div class="text-end">
-			    <button type="submit" class="btn btn-primary addReplyBtn">Submit Reply</button>
-			  </div>
+    <div class="card shadow mb-4">
+    <div class='m-4'>
+        <!--댓글 작성 폼 -->
+      <form id="replyForm" class="mt-4">
+        <!-- 게시글 번호 hidden 처리 -->
+        <input type="hidden" name="bno" value="${board.bno}" />
+      
+        <div class="mb-3 input-group input-group-lg">
+          <span class="input-group-text">Replyer</span>
+          <input type="text" name="replyer" class="form-control" required />
+        </div>
+      
+        <div class="mb-3 input-group">
+          <span class="input-group-text">Reply Text</span>
+          <textarea name="replyText" class="form-control" rows="3" required></textarea>
+        </div>
+      
+        <div class="text-end">
+          <button type="submit" class="btn btn-primary addReplyBtn">Submit Reply</button>
+        </div>
 			</form>
 			<!-- 댓글 작성 폼 끝 -->
 		</div>	
@@ -86,8 +97,8 @@
 </div>
 
 <div class="col-lg-12">
-	<div class="card shadow mb-4">
-    <div class='m-4'>
+  <div class="card shadow mb-4">
+      <div class='m-4'>
         <!--댓글 목록 -->
       <ul class="list-group replyList">
         <li class="list-group-item">
@@ -98,12 +109,12 @@
             <div class="text-muted small">
               작성일
             </div>
-            </div>
+          </div>
           <div class="mt-1 text-secondary small">
-              작성자
+            작성자
           </div>
         </li>
-			</ul>
+ 	  </ul> <!-- 댓글 목록 -->
 
       <div aria-label="댓글 페이지 네비게이션" class="mt-4">
         <ul class="pagination justify-content-center">
@@ -124,7 +135,7 @@
           </li>
         </ul>
       </div>
-        <!-- 페이징 끝 -->
+      <!-- 페이징 끝 -->      
 		</div>
 	</div>
 </div>
@@ -138,16 +149,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <div class="modal-body">
-      
+      <div class="modal-body">      
         <form id="replyModForm">
           <input type="hidden" name="rno" value="33">
           <div class="mb-3">
             <label for="replyText" class="form-label">댓글 내용</label>
             <input type="text" name="replyText" id="replyText" class="form-control" value="Reply Text"/>
           </div>
-        </form>
-        
+        </form>        
       </div>
 
       <div class="modal-footer">
@@ -161,7 +170,6 @@
 </div>
 
 
-<!-- 댓글 목록 -->
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -199,20 +207,20 @@ document.querySelector(".addReplyBtn").addEventListener("click", e=>{
               // 보내는 데이터의 형식이 JSON임을 서버에 알려줍니다.
               'Content-Type': 'application/json' 
           }
-      })
+    })
     // 서버 전송에 성공했을 때 실행되는 구간입니다.
     .then(res => {
           console.log("------성공 응답-------------");
           console.log(res.data); // 서버에서 보내준 결과 데이터를 콘솔에 출력합니다.
           
-          // 전송이 성공했으므로 폼에 입력되어 있던 내용을 모두 비웁니다.
+         // 전송이 성공했으므로 폼에 입력되어 있던 내용을 모두 비웁니다.
           replyForm.reset();
           getReplies(1, true);
-      })
+    })
     // 서버 전송 중 에러가 발생했을 때 실행되는 구간입니다.
     .catch(err => {
          // 에러 메시지와 함께 서버의 응답 내용을 콘솔에 출력합니다.
-          console.error("여전히 에러가 난다면 서버 코드를 확인하세요!", err.response);
+        console.error("여전히 에러가 난다면 서버 코드를 확인하세요!", err.response);
     });
     
 }, false); // 이벤트 캡처링 단계를 사용하지 않겠다는 의미의 기본값입니다.
@@ -220,14 +228,12 @@ document.querySelector(".addReplyBtn").addEventListener("click", e=>{
 let currentPage = 1;
 let currentSize = 10;
 
-const bno = ${board.bno}
+const bno = ${board.bno};
 
-////localhost:8080/replies/49999/list?page=2&size=10
+////localhost:8080/replies/49999/list?page=1&size=10
 function getReplies(pageNum, goLast){
-
-  console.log("---------------getReplies----------------- : " + pageNum);
   
-  axios.get(`/replies/${bno}/list`, {
+  axios.get(`/replies/\${bno}/list`, {
     params: {
       page: pageNum || currentPage,
       size: currentSize
@@ -235,10 +241,10 @@ function getReplies(pageNum, goLast){
   }).then(
     res => {      
       const data = res.data;
-      
+      console.log(data);
       const {totalCount, page, size}  = data;
 
-      if(goLast && (totalCount > (page*size))){
+      if( goLast && (totalCount > (page*size)) ){
         const lastPage = Math.ceil(totalCount/size);
         getReplies(lastPage);
       }else{
@@ -248,10 +254,8 @@ function getReplies(pageNum, goLast){
       }
 
     }
-  )
+  );  
 }
-
-getReplies(1);
 
 const replyList = document.querySelector(".replyList");
 
@@ -261,11 +265,11 @@ function printReplies(data){
   let liStr = "";
 
   for(replyDTO of replyDTOList){
-    liStr +=    `<li class="list-group-item" data-rno="\${replyDTO.rno}">
-                  <div class="d-flex justify-content-between" >
+    liStr +=  `<li class="list-group-item" data-rno="\${replyDTO.rno}">
+                  <div class="d-flex justify-content-between">
                     <div>
                       <strong>\${replyDTO.rno}</strong> - \${replyDTO.replyText}
-                    </div> 
+                    </div>
                     <div class="text-muted small">
                       \${replyDTO.replyDate}
                     </div>
@@ -273,7 +277,7 @@ function printReplies(data){
                   <div class="mt-1 text-secondary small">
                     \${replyDTO.replyer}
                   </div>
-                </li>`;  
+                </li>`
 
   }//end for
 
@@ -289,102 +293,94 @@ function printReplies(data){
 
   for(let i of pageNums){
     paginStr += `<li class="page-item \${i===page ? 'active' : ''}">
-                  <a class="page-link" href="\${i}">\${i}</a>
-                </li>`;
+                    <a class="page-link" href="\${i}">\${i}</a>
+                  </li>`;
   };
 
   if(next){
     paginStr += `<li class="page-item">
-                    <a class="page-link" href="\${end+1}">다음</a>
-                  </li>`;
-  };
+                    <a class="page-link" href="\${end + 1}">다음</a>
+                  </li>`
+  }
 
   document.querySelector(".pagination").innerHTML = paginStr;
 }
 
-document.querySelector(".pagination").addEventListener("click", e=>{
+document.querySelector(".pagination").addEventListener("click", e => {
   e.preventDefault();
   e.stopPropagation();
-  
+
   const target = e.target;
 
   const href = target.getAttribute("href");
-
   if(!href){
-    return;
+    return ;
   }
 
+  console.log(href);
   getReplies(href);
-
 
 }, false);
 
-getReplies(1, true);
+getReplies(1 , true);
 
 const replyModal = new bootstrap.Modal(document.querySelector("#replyModal"));
 const replyModForm = document.querySelector("#replyModForm");
 
-replyList.addEventListener("click", e=>{
-
-  //가장 가까운 상위 li 요소를 찾습니다.
-  const targetLi = e.target.closest("li");
-
-  console.log("-------targetLi--------");
-  console.log(targetLi)
-
+replyList.addEventListener("click", e => {
+  
+  //가장 까까운 상위 li 요소를 찾는다
+  const targetLi = e.target.closest("li");  
+  
   /*
     data-xxx 형태의 속성은 HTML의 사용자 정의 데이타 속성
     브라우저가 의미를 해석하지 않고, js에서 꺼내 쓰라고 존재하는 값!
-    예시 > data-rno, data-replyer, data-reply 등등...
+    예시> data-rno, data-replyer, data-reply등등...
   */
 
   const rno = targetLi.getAttribute("data-rno");
-
-  console.log("-------rno--------");
+  
   console.log(rno);
 
-  if(!rno){ return } // rno가 없으면 리턴시킵니다.
+  if(!rno){ return }
 
-  axios.get(`/replies/\${rno}`).then(res=>{
+  axios.get(`/replies/\${rno}`).then(res => {
     const targetReply = res.data;
 
-    console.log("-------targetReply--------");
     console.log(targetReply);
 
     if(targetReply.delflag == false){
-      replyModForm.querySelector("input[name='rno']").value = targetReply.rno;
-      replyModForm.querySelector("input[name='replyText']").value = targetReply.replyText;
+      replyModForm.querySelector("input[name = 'rno']").value = targetReply.rno;
+      replyModForm.querySelector("input[name = 'replyText']").value = targetReply.replyText
 
       replyModal.show();
 
     }else{
       alert("삭제된 댓글은 조회할 수 없습니다.");
     }
-  })
+  });
 
-}, false)
-
+}, false);
 
 //삭제
-document.querySelector(".btnReplyDel").addEventListener("click", e=>{
+document.querySelector(".btnReplyDel").addEventListener("click", e => {
   e.preventDefault();
   e.stopPropagation();
 
   const formData = new FormData(replyModForm);
 
-  const rno = formData.get("rno");
+  const rno = formData.get("rno"); 
 
-  console.log("-------삭제 rno--------");
-  console.log(rno);
+  axios.delete(`/replies/\${rno}`).then( res => {
+    const data = res.data;    //{"result": "deleted"}
 
-  axios.delete(`/replies/\${rno}`).then(res => {
-    const data = res.data; //{"result":"deleted"}
-
-    alert("댓글이 삭제되었습니다.");
+    alert("삭제 성공했습니다.");
+  
     replyModal.hide();
 
     getReplies(currentPage);
-  })
+  });
+
 }, false);
 
 
@@ -397,16 +393,15 @@ document.querySelector(".btnReplyMod").addEventListener("click", e=>{
 
   const rno = formData.get("rno");
 
-  axios.put(`/replies/\${rno}`, formData).then(res => {
+  axios.put(`/replies/\${rno}`, formData ).then(res => {
     const data = res.data;
 
-    alert("댓글이 수정되었습니다.");
+    alert("수정이 성공했습니다.");
     replyModal.hide();
-
     getReplies(currentPage);
   })
+  
 }, false);
-
 
 </script>
 

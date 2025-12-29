@@ -10,10 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /*
- * use springdb;
-
-create table tbl_reply(
-   rno int auto_increment primary key,
+ * create table tbl_reply(
+	rno int auto_increment primary key,
     replyText varchar(500) not null, -- 댓글 내용
     replyer varchar(50) not null,  -- 작성자
     replydate timestamp default now(),
@@ -21,13 +19,7 @@ create table tbl_reply(
     delflag boolean default false,
     bno int not  null  
 );
-
-alter table tbl_reply add constraint fk_reply_board foreign key(bno)
-references tbl_board(bno);
-
-create index idx_reply_board on tbl_reply(bno desc, rno asc);
  */
-
 
 @Data
 @Builder
@@ -38,7 +30,6 @@ public class ReplyDTO {
 	private String replyText;
 	private String replyer;
 	
-	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDateTime replyDate;
 	
@@ -48,4 +39,5 @@ public class ReplyDTO {
 	private boolean delflag;
 	
 	private Long bno;
+	
 }

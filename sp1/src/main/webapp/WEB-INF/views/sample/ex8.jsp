@@ -7,9 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>ex8 JSP입니다.</h1>
-	
-	<h1>이름 :${param.name} <br> 일반Attribute</h1>
-	<h1>나이 :${age} <br> FlashAttribute</h1>
+<h1>이름 : ${param.name}</h1>
+<h1>나이 : ${age}</h1>
 </body>
 </html>

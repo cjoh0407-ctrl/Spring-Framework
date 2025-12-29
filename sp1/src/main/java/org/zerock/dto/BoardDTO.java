@@ -11,22 +11,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 /*
- * CREATE TABLE table_board(
-	bon INT auto_increment PRIMARY KEY,
-    title VARCHAR(500) NOT NULL,
-    content VARCHAR(2000) NOT NULL,
-    writer VARCHAR(50) NOT NULL,
-    regdate TIMESTAMP DEFAULT now(),
-    updatedate TIMESTAMP DEFAULT now(),
-    delflag BOOLEAN DEFAULT false
+ * create table table_board(
+    bno int auto_increment primary key,
+    title varchar(500) not null,
+    content varchar(2000) not null,
+    writer varchar(50) not null,
+    regdate timestamp default now(),
+    updatedate timestamp default now(),
+    delflag boolean default false
 );
  */
-@Setter // 멤버 변수 변경 가능
-@Getter // 조회
-@ToString // 멤버 변수 값 조회
-@AllArgsConstructor // 모든 매개변수 생성자
-@NoArgsConstructor // 기본생성자
-@Builder // setter 대용으로 사용 가능
+@Setter  //멤버 변수 변경 가능
+@Getter  // 조회
+@ToString  //멤버 변수 값 조회
+@AllArgsConstructor  // 생성자
+@NoArgsConstructor   //디폴트 생성자
+@Builder             //setter 대용으로 사용 가능    
 public class BoardDTO {
 
 	private Long bno;
@@ -43,18 +43,5 @@ public class BoardDTO {
 	public String getCreatedDate() {
 		return regDate.format(DateTimeFormatter.ISO_DATE);
 	}
-	
+		
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

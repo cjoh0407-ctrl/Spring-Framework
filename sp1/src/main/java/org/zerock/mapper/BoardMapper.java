@@ -17,47 +17,23 @@ public interface BoardMapper {
 	
 	List<BoardDTO> list();
 	
-	
-	
-	List<BoardDTO> list2(@Param("skip") int skip, @Param("count") int count	);
+	List<BoardDTO> list2(@Param("skip") int skip, @Param("count") int count);
 	
 	int listCount();
 	
-	/*
-	 *	T 제목 / C 내용 / W 작성자
-	 *	types : TCW -> T|C|W
-	 *	keyword : 스프링 검색 
+	/* T, C, W
+	 * types : TCW ->   T|C|W
+	 * keyword : 스프링 검색
 	 */
-	
-	List<BoardDTO> listSearch(@Param("skip") int skip,
+	List<BoardDTO> listSearch( @Param("skip") int skip,
 								@Param("count") int count,
 								@Param("types") String[] types,
+//								@Param("types") List<String> types,
 								@Param("keyword") String keyword
-								);
+							  );
 	
 	int listCountSearch(
-			@Param("types") String[] types,
-			@Param("keyword") String keyword
+				@Param("types") String[] types,
+				@Param("keyword") String keyword
 			);
-	
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

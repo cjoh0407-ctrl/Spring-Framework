@@ -1,5 +1,6 @@
 package org.zerock.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -17,27 +18,25 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class BoardMapperTests {
 
-	@Autowired // 테스트 환경에서는 생성자 주입은 먹히지 않으니 Autowired로 하면된다.
+	@Autowired
 	private BoardMapper boardMapper;
 	
 	@Test
 	public void testInsert() {
 		
-		//setter 이용한 방식
-//		BoardDTO dto = new BoardDTO(); 
+//		BoardDTO dto = new BoardDTO();
 //		dto.setTitle("title");
-//		dto.setContent("Content");
+//		dto.setContent("content");
 //		dto.setWriter("user00");
 		
-		//builder 이용한 방식
 		BoardDTO dto = BoardDTO.builder()
-				.title("title2")
-				.content("content2")
-				.writer("user02")
+				.title("title4")
+				.content("content4")
+				.writer("user04")				
 				.build();
 		
-		int insertCount = boardMapper.insert(dto); // 1값이 들어오면 성공, 0이면 실패
-		log.info("------------------------");
+		int insertCount = boardMapper.insert(dto);
+		log.info("-----------------------------");
 		log.info("insertCount : " + insertCount);
 		
 		log.info("BNO : " + dto.getBno());
@@ -45,9 +44,9 @@ public class BoardMapperTests {
 	
 	@Test
 	public void testSelectOne() {
-		BoardDTO boardDTO = boardMapper.selectOne(1L);
-		
-		log.info("boardDTO : " + boardDTO);
+		 BoardDTO boardDTO = boardMapper.selectOne(1L);
+		 
+		 log.info("boardDTO : " + boardDTO);
 	}
 	
 	@Test
@@ -61,73 +60,61 @@ public class BoardMapperTests {
 	public void testUpdate() {
 		BoardDTO dto = BoardDTO.builder()
 				.title("new title")
-				.content("new content")
+				.content("new Content")
 				.delFlag(false)
 				.bno(1L)
 				.build();
 		
 		int result = boardMapper.update(dto);
-		
 		log.info("result : " + result);
 	}
 	
 	@Test
 	public void testSelect() {
 		
-		//List<BoardDTO> list = boardMapper.list();
+		//List<BoardDTO> list = boardMapper.list();		
 		//for(BoardDTO dto : list)
 		//	log.info(dto);
 		
-		boardMapper.list().forEach(dto->log.info(dto)); // 람다식
 		
-		//boardMapper.list().forEach(log::info); // 메서드 참조형식
+		boardMapper.list().forEach(dto->log.info(dto));
+		
 	}
 	
-	
-	
-	
-	
-	
 	@Test
-	public void testPaging() {
+	public void testPagining() {
+	
+		int page =3;
 		
-		int page = 3;
-		
-		//계산식
-		int skip = (page-1) * 10;
+		//계산
+		int skip = (page - 1) * 10;
 		int count = 10;
 		
 		boardMapper.list2(skip, count)
-			.forEach(board -> log.info(board));
+			.forEach(board-> log.info(board));
 	}
-	
-	
-	
 	
 	@Test
 	public void testPagNums() {
 		
+//		IntStream.rangeClosed(1, 5).boxed().forEach(i -> log.info(i));
 		List<Integer> list = IntStream.rangeClosed(1, 5).boxed().toList();
 		log.info(list);
-		
-		//IntStream.rangeClosed(1, 5).boxed().forEach(i -> log.info(i));
-		//IntStream.range() 1부터 5전	정수값 반환
-		//IntStream.rangeClosed() 1부터 5까지 정수값 반환
-		//boxed()는 객체로 만든다! int(자료형) -> integer(객체)
 	}
-	
 	
 	@Test
 	public void testSearch() {
+		int page= 2;
 		
-		int page = 2;
-		int skip = (page-1) * 10;
+		int skip = (page -1) * 10;
 		int count = 15;
 		
+		String[] types = new String[] {"T","C"};
 		
+//		List<String> types = new ArrayList<String>();
+//		types.add("T");
+//		types.add("C");		
 		
-		
-		String[] types = new String[] {"T", "C", "W"};
 		String keyword = "test";
 		
 		boardMapper.listSearch(skip, count, types, keyword);
@@ -136,31 +123,12 @@ public class BoardMapperTests {
 	@Test
 	public void testCount() {
 		
-		String[] types = new String[] {"T", "C"};
-		String keyword = "새글";
+		
+		String[] types = new String[] {"T","C"};				
+		
+		String keyword = "수정";
 		
 		int result = boardMapper.listCountSearch(types, keyword);
 		log.info("전체 갯수 : " + result);
 	}
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
